@@ -26,8 +26,7 @@ class Phone(Field):
 class Birthday(Field):
     def __init__(self, birthday):
         try:
-            super().__init__(birthday)
-            self.birthday = datetime.strptime(birthday, "%d.%m.%Y").date()
+            super().__init__(datetime.strptime(birthday, "%d.%m.%Y").date())
         
         except ValueError:
             raise ValueError("Invalid date format. Use DD.MM.YYYY")
@@ -173,6 +172,15 @@ def show_upcoming_birthdays(book):
     else:
         return "No upcoming birthdays."
 
+def error_handler(func):
+    def wrapper(*args, **kwargs):
+        try:
+            return func(*args, **kwargs)
+        except Exception as e:
+            return f"Error: {str(e)}"
+    return wrapper
+
+@error_handler
 def main():
     book = AddressBook()
     print("Welcome to the assistant bot!")
